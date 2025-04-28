@@ -25,6 +25,7 @@ create table emails(
 ```
 
 This table stores:
+
 - Email metadata (sender, recipients, subject, timestamps, labels)
 - Cleaned text content of emails
 - Extracted links for further crawling
@@ -51,6 +52,7 @@ create table link_docs(
 ```
 
 This table stores:
+
 - Content crawled from links found in emails
 - Reference to the source email
 - Hierarchical structure using parent references and ltree paths
@@ -85,6 +87,7 @@ create index on link_docs using ivfflat (embedding vector_l2_ops) with (lists=10
 ```
 
 These indexes enable:
+
 - Fast nearest-neighbor search across large vector collections
 - Optimized performance with IVF (Inverted File) indexing
 - L2 distance calculations for similarity metrics
@@ -105,6 +108,7 @@ CREATE INDEX link_docs_path_gist_idx ON link_docs USING GIST (path);
 ```
 
 This enables:
+
 - Efficient path-based queries (ancestors, descendants, etc.)
 - Hierarchical document organization
 - Fast tree traversal operations
@@ -116,6 +120,7 @@ The system uses Supabase Edge Functions (built on Deno 1.40) for serverless proc
 #### `ingest_gmail.ts`
 
 This function:
+
 1. Authenticates with Gmail API
 2. Fetches new emails based on time filters
 3. Extracts text content and links
@@ -125,6 +130,7 @@ This function:
 #### `crawl_links.ts`
 
 This function:
+
 1. Retrieves unprocessed links from the `emails` table
 2. Uses Crawl4AI to fetch and process content from each link
 3. Generates embeddings for the content
@@ -173,6 +179,7 @@ SELECT cron.schedule(
 ```
 
 This enables:
+
 - Automated daily email ingestion
 - Hourly link crawling and processing
 - Configurable scheduling with cron syntax
@@ -206,7 +213,7 @@ sequenceDiagram
     CrawlFunction->>OpenAI: Generate embeddings for content
     OpenAI->>CrawlFunction: Return embeddings
     CrawlFunction->>DB: Store document data with hierarchical structure
-    
+
     Note over DB: RAG Queries
     DB->>DB: Vector similarity search on embeddings
     DB->>DB: Hierarchical document traversal via ltree

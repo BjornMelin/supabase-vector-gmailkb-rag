@@ -1,0 +1,14 @@
+{
+  "name": "supabase-vector-gmailkb-rag",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write . && deno fmt",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "vitest": "^1.5.0",
+    "@types/node": "^20.11.0"
+  }
+}

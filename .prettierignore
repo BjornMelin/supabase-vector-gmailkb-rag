@@ -1,0 +1,4 @@
+edge/
+dist/
+coverage/
+supabase/.output/ 

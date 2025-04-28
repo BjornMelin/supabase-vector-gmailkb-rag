@@ -8,6 +8,7 @@
 ![GitHub stars](https://img.shields.io/github/stars/bjornmelin/supabase-vector-gmailkb-rag?style=social)
 ![Last Commit](https://img.shields.io/github/last-commit/bjornmelin/supabase-vector-gmailkb-rag)
 [![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat&logo=supabase&logoColor=white)](https://supabase.io/)
+![CI](https://github.com/bjornmelin/supabase-vector-gmailkb-rag/actions/workflows/ci.yml/badge.svg)
 
 </div>
 
@@ -69,7 +70,7 @@ sequenceDiagram
     CrawlFunction->>OpenAI: Generate embeddings for content
     OpenAI->>CrawlFunction: Return embeddings
     CrawlFunction->>DB: Store document data with hierarchical structure
-    
+
     Note over DB: RAG Queries
     DB->>DB: Vector similarity search on embeddings
     DB->>DB: Hierarchical document traversal via ltree
@@ -90,18 +91,21 @@ For a more detailed architecture explanation, see [ARCHITECTURE.md](docs/ARCHITE
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/bjornmelin/supabase-vector-gmailkb-rag.git
 cd supabase-vector-gmailkb-rag
 ```
 
 2. Set up environment variables:
+
 ```bash
 cp .env.example .env
 # Edit .env with your credentials
 ```
 
 3. Apply the database migrations:
+
 ```bash
 # Apply base schema
 supabase db push schema/schema.sql
@@ -114,12 +118,14 @@ supabase db push supabase/migrations/20250427_edge_functions.sql
 ```
 
 4. Deploy Edge Functions:
+
 ```bash
 supabase functions deploy ingest_gmail
 supabase functions deploy crawl_links
 ```
 
 5. Set up secrets for Edge Functions:
+
 ```bash
 supabase secrets set OPENAI_API_KEY=your-api-key
 supabase secrets set GMAIL_CLIENT_ID=your-client-id

@@ -69,3 +69,12 @@ ENV/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# --- Cursor AI Build/CI Standard ---
+.vscode/
+edge/
+dist/
+coverage/
+*.log
+supabase/.output/
+# --- End Cursor AI Build/CI Standard ---
