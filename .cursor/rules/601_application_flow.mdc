@@ -1,7 +1,9 @@
 ---
-description: 
+title: "Application Flow"
+description: "Complete data flow and architecture of the Gmail KB pipeline"
 globs: 
-alwaysApply: true
+alwaysActive: true
+priority: 70
 ---
 
 # Application Flow

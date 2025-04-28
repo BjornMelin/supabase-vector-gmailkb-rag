@@ -1,7 +1,9 @@
 ---
-description: 
+title: "Project Overview"
+description: "Overview of the Gmail KB project and its architecture"
 globs: 
-alwaysApply: true
+alwaysActive: true
+priority: 10
 ---
 
 # MIDS Gmail Knowledge Base RAG Pipeline

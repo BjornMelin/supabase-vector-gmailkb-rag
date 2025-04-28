@@ -1,7 +1,9 @@
 ---
-description: 
+title: "System Prompt"
+description: "Core operating instructions for Cursor AI Agent"
 globs: 
-alwaysApply: false
+alwaysActive: true
+priority: 20
 ---
 
 # Cursor AI Agent System Prompt

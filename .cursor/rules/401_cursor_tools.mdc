@@ -1,7 +1,9 @@
 ---
-description: 
+title: "Cursor MCP Tools"
+description: "Reference guide for all MCP server tools and usage patterns"
 globs: 
-alwaysApply: true
+alwaysActive: true
+priority: 50
 ---
 
 # Cursor MCP Tools Integration Reference

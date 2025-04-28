@@ -1,7 +1,9 @@
 ---
-description: 
+title: "Workflow State Template"
+description: "Template for creating new session-specific workflow state files"
 globs: 
-alwaysApply: false
+alwaysActive: true
+priority: 35
 ---
 
 # Workflow State (STM + Rules + Log)
