@@ -1,31 +1,18 @@
--- Install ltree extension for hierarchical document structure
-CREATE EXTENSION IF NOT EXISTS ltree;
+-- Enable UUID extension if not already enabled
+create extension if not exists "uuid-ossp";
 
--- Add path column to link_docs table
-ALTER TABLE link_docs ADD COLUMN IF NOT EXISTS path ltree;
+-- Hierarchical metadata columns for Crawl4AI
+alter table link_docs add column if not exists crawl_session_id uuid default uuid_generate_v4();
+alter table link_docs add column if not exists parent_doc_id uuid references link_docs(link_id);
+alter table link_docs add column if not exists root_url text;
+alter table link_docs add column if not exists depth int generated always as (nlevel(path)) stored;
 
--- Create index on path column for efficient hierarchical queries
-CREATE INDEX link_docs_path_idx ON link_docs USING GIST (path);
+-- Ensure ltree extension and path column
+create extension if not exists ltree;
+alter table link_docs add column if not exists path ltree;
 
--- Add parent_link_id column for explicit parent-child relationships
-ALTER TABLE link_docs ADD COLUMN IF NOT EXISTS parent_link_id uuid REFERENCES link_docs(link_id);
+-- Add direct email reference for traceability
+alter table link_docs add column if not exists source_email_id uuid references emails(email_id);
 
--- Create function to update path when parent changes
-CREATE OR REPLACE FUNCTION update_link_doc_path()
-RETURNS TRIGGER AS $$
-BEGIN
-  IF NEW.parent_link_id IS NULL THEN
-    NEW.path = text2ltree(NEW.link_id::text);
-  ELSE
-    SELECT path || text2ltree(NEW.link_id::text) INTO NEW.path
-    FROM link_docs
-    WHERE link_id = NEW.parent_link_id;
-  END IF;
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
--- Create trigger to maintain paths
-CREATE TRIGGER link_doc_path_trigger
-BEFORE INSERT OR UPDATE OF parent_link_id ON link_docs
-FOR EACH ROW EXECUTE FUNCTION update_link_doc_path();
+-- Index for hierarchical path queries
+create index if not exists link_docs_path_gist_idx on link_docs using gist(path);

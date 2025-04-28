@@ -41,8 +41,12 @@ create table link_docs(
   title text,
   content text,
   embedding vector(1536),
-  parent_link_id uuid references link_docs(link_id),
-  path ltree
+  parent_doc_id uuid references link_docs(link_id),
+  path ltree,
+  crawl_session_id uuid,
+  root_url text,
+  source_email_id uuid references emails(email_id),
+  depth int generated always as (nlevel(path)) stored
 );
 ```
 
@@ -51,6 +55,8 @@ This table stores:
 - Reference to the source email
 - Hierarchical structure using parent references and ltree paths
 - Vector embeddings of the document content
+- Crawl session tracking for batched operations
+- Depth information for recursive crawling control
 
 #### `tasks` Table
 
@@ -95,7 +101,7 @@ CREATE EXTENSION IF NOT EXISTS ltree;
 ALTER TABLE link_docs ADD COLUMN IF NOT EXISTS path ltree;
 
 -- Create index on path column for efficient hierarchical queries
-CREATE INDEX link_docs_path_idx ON link_docs USING GIST (path);
+CREATE INDEX link_docs_path_gist_idx ON link_docs USING GIST (path);
 ```
 
 This enables:
@@ -204,6 +210,13 @@ sequenceDiagram
     Note over DB: RAG Queries
     DB->>DB: Vector similarity search on embeddings
     DB->>DB: Hierarchical document traversal via ltree
+```
+
+```mermaid
+graph TD
+  Emails -->|links extracted| Crawl4AI[Crawl4AI]
+  Crawl4AI -->|crawl results| LinkDocs[link_docs Table]
+  LinkDocs -->|parent/child hierarchy| LinkDocs
 ```
 
 ## Performance Considerations
