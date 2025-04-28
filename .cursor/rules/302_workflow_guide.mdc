@@ -1,0 +1,95 @@
+---
+title: "Workflow Guide"
+description: "How to use workflow states and sessions in this project"
+alwaysActive: true
+priority: 45
+---
+
+# Session Workflow Guide
+
+This document explains how to manage workflow states and sessions in this project.
+
+## Session Management
+
+### Starting a New Session
+
+1. **Create a new workflow state file**:
+   ```bash
+   # Copy the template
+   cp .cursor/rules/301_workflow_state_template.mdc .cursor/rules/301_workflow_state.mdc
+   ```
+
+2. **Customize for your session**:
+   - Update the YAML front matter
+   - Set the initial Phase and Status
+   - Add project-specific rules if needed
+   - Update the log with session start
+
+3. **Begin working on tasks**: The workflow state file will be updated as you progress
+
+### Ending a Session
+
+1. **Archive your session state**:
+   ```bash
+   # Create a dated copy in the sessions directory
+   cp .cursor/rules/301_workflow_state.mdc .cursor/sessions/$(date +%Y-%m-%d)_task-name_workflow_state.mdc
+   ```
+
+2. **Update metadata**:
+   - Set `alwaysActive: false` in the archived file
+   - Set `priority: 0` in the archived file to avoid cluttering the UI
+
+3. **Persist key information**:
+   ```python
+   # Use memory_mcp to store important insights
+   memory_mcp.add_observations({
+     "entityName": "project_milestone",
+     "contents": ["Session completed: task-name", "Key outcome 1", "Key outcome 2"]
+   })
+   ```
+
+## Multiple Sessions
+
+For concurrent work on different tasks:
+
+1. **Use branch-specific workflow states**:
+   - Create a feature branch for each task
+   - Each branch maintains its own workflow state
+
+2. **Switch between tasks**:
+   ```bash
+   git checkout feat/task-a   # Switch to task A
+   # Work on task A using its workflow state
+   
+   git checkout feat/task-b   # Switch to task B
+   # Work on task B using its workflow state
+   ```
+
+## Session File Naming Convention
+
+```
+YYYY-MM-DD_task-name_workflow_state.mdc
+```
+
+Example:
+```
+2025-04-28_gmail-api-auth_workflow_state.mdc
+```
+
+## Integration with Memory
+
+- Use `memory_mcp` to persist key milestones, decisions, and learnings
+- Reference previous session files when needed for context
+- Keep the current session's workflow state active and updated
+
+## Workflow State Sections
+
+Each workflow state file contains these key sections:
+
+1. **State**: Current phase and status of the task
+2. **Plan**: Detailed implementation plan (after ANALYZE phase)
+3. **Rules**: Guidelines for the current phase and task
+4. **Log**: Chronological record of actions and decisions
+5. **Current Phase Details**: Specific information about the active phase
+
+Always update these sections to maintain an accurate record of progress.
