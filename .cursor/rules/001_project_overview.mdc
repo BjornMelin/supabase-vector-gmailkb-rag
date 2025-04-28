@@ -1,0 +1,33 @@
+# MIDS Gmail Knowledge Base RAG Pipeline
+
+## Project Overview
+
+This project implements a programmatic Gmail to Supabase vector knowledge base pipeline with web crawling capabilities. It enables deterministic extraction, transformation, and loading of Gmail content into a searchable vector database.
+
+## Technology Stack
+
+- **Database**: Supabase PostgreSQL with pgvector extension and ltree
+- **Vector Indexing**: IVFFLAT indexes for efficient similarity search
+- **Serverless Functions**: Deno 1.40 Edge Functions
+- **Scheduling**: pg_cron for automated ingestion and crawling
+- **API Integrations**: Gmail API, OpenAI Embeddings API, Crawl4AI
+
+## Project Structure
+
+- **Schema**: Optimized PostgreSQL schema with hierarchical path tracking (ltree)
+- **Functions**: Edge functions for Gmail content extraction and processing
+- **Migrations**: Version-controlled database schema changes
+- **Tests**: Unit and integration tests for all components
+
+## Repository Information
+
+- **GitHub URL**: https://github.com/bjornmelin/supabase-vector-gmailkb-rag
+- **Supabase Project ID**: ifyfulidhporzucbgccf
+- **Supabase URL**: https://ifyfulidhporzucbgccf.supabase.co
+
+## Development Workflow
+
+- Conventional commits workflow
+- Feature branch development
+- Pull request review process
+- Automated testing via GitHub Actions

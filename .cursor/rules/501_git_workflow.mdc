@@ -1,0 +1,127 @@
+# Git Workflow Guidelines
+
+This document defines the Git and GitHub workflow standards for this project.
+
+## Branch Naming Convention
+
+All branches must follow these naming conventions:
+
+- `feat/descriptive-name` - For new features
+- `fix/descriptive-name` - For bug fixes
+- `docs/descriptive-name` - For documentation changes
+- `chore/descriptive-name` - For maintenance tasks
+- `refactor/descriptive-name` - For code refactoring
+- `test/descriptive-name` - For test additions or modifications
+
+Example: `feat/gmail-api-auth`, `fix/vector-index-performance`
+
+## Conventional Commits
+
+All commits must follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
+
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Types
+
+- `feat`: A new feature
+- `fix`: A bug fix
+- `docs`: Documentation only changes
+- `style`: Changes that do not affect the meaning of the code
+- `refactor`: Code changes that neither fix a bug nor add a feature
+- `perf`: Code changes that improve performance
+- `test`: Adding missing tests or correcting existing tests
+- `chore`: Changes to the build process or auxiliary tools
+
+Example: `feat(gmail): implement OAuth2 authentication flow`
+
+### Scope
+
+The scope should be the name of the component affected:
+
+- `db` - Database schema or migrations
+- `functions` - Edge Functions
+- `api` - API endpoints
+- `gmail` - Gmail API integration
+- `embeddings` - Vector embeddings
+- `crawl` - Web crawling functionality
+- `search` - Vector search implementation
+- `ui` - User interface components
+
+### Rules
+
+1. Keep commit messages concise but descriptive
+2. Use imperative, present tense (e.g., "add" not "added")
+3. Reference issues in commit footer where applicable
+4. Include breaking changes notice in commit footer
+
+## Pull Request Process
+
+### Creation
+
+1. Create feature/fix branch from `main`
+2. Implement changes with conventional commits
+3. Push branch to GitHub
+4. Open PR with comprehensive description
+
+### PR Checklist
+
+Before requesting review, ensure:
+
+- [ ] Code follows project style guidelines
+- [ ] All tests pass
+- [ ] New code has accompanying tests
+- [ ] Documentation is updated
+- [ ] PR title follows conventional commits format
+- [ ] Breaking changes are clearly marked
+
+### Review Process
+
+1. Automated checks must pass
+2. At least one approval is required
+3. Address all requested changes
+4. Maintainer will merge when approved
+
+### Merge Strategy
+
+PRs are merged using squash merging:
+
+1. All commits in the PR are combined into a single commit
+2. The commit message follows conventional commits
+3. The PR branch is deleted after merge
+
+## Branch Cleanup
+
+After PR is merged:
+
+1. Delete remote branch (automatic)
+2. Update local main branch:
+   ```bash
+   git checkout main
+   git fetch -p
+   git pull --all
+   ```
+3. Delete local feature branch:
+   ```bash
+   git branch -D feature-branch-name
+   ```
+
+## Protected Branches
+
+- `main` - Protected, requires PR and approvals
+- `production` - Deployment branch, requires release PR
+
+## Release Process
+
+Releases follow semantic versioning (MAJOR.MINOR.PATCH):
+
+1. Create release branch `release/vX.Y.Z`
+2. Update version numbers in relevant files
+3. Create PR to `production`
+4. Tag release upon merge
+5. Generate release notes from conventional commits
