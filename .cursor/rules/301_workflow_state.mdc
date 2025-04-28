@@ -1,0 +1,92 @@
+# Workflow State (STM + Rules + Log)
+
+This file contains the dynamic state of the Supabase Gmail KB project workflow, including current phase, plan, rules, and action log. It is constantly updated during the development process.
+
+## State
+
+- Phase: ANALYZE
+- Status: READY
+- CurrentItem: null
+
+## Plan
+
+[After completing the ANALYZE phase, the detailed plan will be written here.]
+
+## Rules
+
+### Global Rules
+
+- Always operate based on the current Phase and Status in the State section
+- Update the State section after completing each step or when status changes
+- Record all actions, decisions, and observations in the Log section
+- Use Sequential Thinking for complex problems, breaking them into manageable steps
+- Follow coding standards and conventions defined in project_config.md
+- Do not proceed to CONSTRUCT phase without user approval of the plan
+- Clear context between processing different items to prevent context drift
+- All database operations use the Supabase project ID: ifyfulidhporzucbgccf
+- All file modifications follow the conventional commits format
+
+### Gmail API Integration Rules
+
+- Use OAuth 2.0 flow for Gmail API authentication
+- Store tokens securely in Supabase environment variables
+- Implement proper error handling for API rate limits
+- Use typed interfaces for all API responses
+- Cache results appropriately to minimize API calls
+- Process emails in batches to optimize performance
+- Extract email body, headers, and metadata
+- Parse URLs for later crawling
+- Maintain hierarchical structure using ltree paths
+
+### Database Operations Rules
+
+- Use migrations for all schema changes
+- Implement proper vector indexing for pgvector columns
+- Follow the established naming conventions for database objects
+- Test all SQL operations before applying to production
+- Document all schema changes in migration files
+- Use pg_cron for scheduling automated operations
+- Ensure proper error handling and logging for database operations
+
+### Edge Function Rules
+
+- Follow Deno best practices for all TypeScript code
+- Include comprehensive error handling in all functions
+- Implement proper logging for debugging and monitoring
+- Use modular design for reusable components
+- Create thorough documentation for all functions
+- Test all functions thoroughly before deployment
+- Ensure proper authentication and authorization checks
+
+### Testing Rules
+
+- Write unit tests for all core functions
+- Implement integration tests for critical workflows
+- Create test fixtures for consistent test data
+- Test edge cases and error conditions
+- Ensure tests run in CI pipeline before merging
+
+## Log
+
+2025-04-28 09:15 - Initial Cursor rule set created with 7 .mdc files
+2025-04-28 09:20 - Renamed workflow_state_template.mdc to workflow_state.mdc and customized for project
+2025-04-28 09:21 - Ready to begin Phase 3: Gmail API Authentication & Ingest implementation
+
+## Current Phase Details
+
+### Phase 3: Gmail API Authentication & Ingest
+
+**Objectives:**
+1. Implement OAuth 2.0 authentication flow for Gmail API
+2. Create Edge Functions for email extraction and processing
+3. Store extracted email data in Supabase with proper hierarchy
+4. Extract URLs for later crawling
+5. Implement scheduler for automated extraction
+
+**Dependencies:**
+- Gmail API credentials
+- Supabase configuration
+- Edge Functions deployment
+- Database schema implementation
+
+**Status:** Planning stage, ready for detailed implementation plan
