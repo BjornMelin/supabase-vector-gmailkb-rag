@@ -1,0 +1,71 @@
+# Environment variables and secrets
+.env
+.env.local
+.env.*
+!.env.example
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Supabase
+/supabase/.branches/
+/supabase/.temp/
+.supabase
+
+# Build artifacts
+dist/
+build/
+.next/
+out/
+
+# Logs
+logs/
+*.log
+
+# Testing
+coverage/
+.nyc_output/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# IDE/Editor configs
+.idea/
+.vscode/
+*.sublime-*
+.project
+.classpath
+.settings/
+
+# Gmail API tokens and creds
+gmail_ingest/token.json
+gmail_ingest/credentials.json
+gmail_ingest/gmail_tokens/
+
+# Temp files
+*.tmp
+*.temp
+
+# Custom repomix output files
+repomix-output.*
+
+# Python specific
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+.installed.cfg
+*.egg
