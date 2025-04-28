@@ -17,7 +17,7 @@ Example:
 ## Usage
 
 1. At the start of a new session/task:
-   - Copy the template from `../.cursor/rules/301_workflow_state_template.mdc`
+   - Copy the template from `../.cursor/rules/300_workflow_state_template.mdc`
    - Rename according to the convention above
    - Place in this directory
 

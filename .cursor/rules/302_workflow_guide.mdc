@@ -16,7 +16,7 @@ This document explains how to manage workflow states and sessions in this projec
 1. **Create a new workflow state file**:
    ```bash
    # Copy the template
-   cp .cursor/rules/301_workflow_state_template.mdc .cursor/rules/301_workflow_state.mdc
+   cp .cursor/rules/300_workflow_state_template.mdc .cursor/rules/301_workflow_state.mdc
    ```
 
 2. **Customize for your session**:
