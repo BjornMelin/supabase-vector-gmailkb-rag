@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "types": ["@supabase/functions-js"]
+    "module": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "nodenext",
+    "types": ["vitest/globals"]
   }
 }
