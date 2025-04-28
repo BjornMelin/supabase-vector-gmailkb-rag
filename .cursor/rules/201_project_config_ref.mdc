@@ -1,3 +1,10 @@
+---
+title: "Project Configuration"
+description: "Long-term project configuration and technical specifications"
+alwaysActive: true
+priority: 30
+---
+
 # Project Configuration (LTM)
 
 This file contains the stable, long-term context for the project. It is read at the beginning of sessions and referenced when needed for critical decisions.

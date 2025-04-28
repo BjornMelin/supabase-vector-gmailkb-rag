@@ -1,3 +1,10 @@
+---
+title: "Cursor MCP Tools"
+description: "Reference guide for all MCP server tools and usage patterns"
+alwaysActive: true
+priority: 50
+---
+
 # Cursor MCP Tools Integration Reference
 
 This document defines all available MCP servers and usage guidelines for this project.

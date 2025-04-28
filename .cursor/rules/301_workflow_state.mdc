@@ -1,3 +1,10 @@
+---
+title: "Workflow State"
+description: "Dynamic workflow state tracking for the Gmail KB project"
+alwaysActive: true
+priority: 40
+---
+
 # Workflow State (STM + Rules + Log)
 
 This file contains the dynamic state of the Supabase Gmail KB project workflow, including current phase, plan, rules, and action log. It is constantly updated during the development process.
