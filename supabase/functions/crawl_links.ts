@@ -23,7 +23,10 @@ interface LinkDoc {
   title: string;
   content: string;
   embedding: number[];
-  parent_link_id?: string;
+  crawl_session_id?: string;
+  parent_doc_id?: string;
+  root_url?: string;
+  source_email_id?: string;
 }
 
 Deno.serve(async (req: Request) => {
@@ -100,6 +103,9 @@ async function processLinks(links: { emailId: string; url: string }[]): Promise<
   
   for (const link of links) {
     try {
+      // Generate a crawl session ID
+      const crawlSessionId = crypto.randomUUID();
+      
       // Crawl the link using Crawl4AI
       const crawlResult = await crawlLink(link.url);
       
@@ -111,20 +117,24 @@ async function processLinks(links: { emailId: string; url: string }[]): Promise<
       // Generate embedding
       const embedding = await generateEmbedding(crawlResult.content);
       
-      // Store in database
+      // Store root document in database
+      const linkId = crypto.randomUUID();
       await storeLinkDoc({
-        link_id: crypto.randomUUID(),
+        link_id: linkId,
         email_id: link.emailId,
         url: link.url,
         mime_type: crawlResult.mime_type || "text/html",
         title: crawlResult.title || link.url,
         content: crawlResult.content,
         embedding,
+        crawl_session_id: crawlSessionId,
+        root_url: link.url,
+        source_email_id: link.emailId
       });
       
       // Process any child links found
       if (crawlResult.links && crawlResult.links.length > 0) {
-        await processChildLinks(link.emailId, link.url, crawlResult.links);
+        await processChildLinks(link.emailId, linkId, link.url, crawlResult.links, crawlSessionId);
       }
       
       processedCount++;
@@ -149,6 +159,7 @@ async function crawlLink(url: string): Promise<any> {
       includeLinks: true,
       removeHtml: true,
       extractImages: false,
+      maxDepth: 2
     }),
   });
   
@@ -181,23 +192,11 @@ async function storeLinkDoc(linkDoc: LinkDoc): Promise<void> {
 
 async function processChildLinks(
   emailId: string,
-  parentUrl: string,
-  childLinks: string[]
+  parentId: string,
+  rootUrl: string,
+  childLinks: string[],
+  crawlSessionId: string
 ): Promise<void> {
-  // Get parent link_id
-  const { data: parentData, error: parentError } = await supabase
-    .from("link_docs")
-    .select("link_id")
-    .eq("url", parentUrl)
-    .limit(1);
-  
-  if (parentError || !parentData || parentData.length === 0) {
-    console.error(`Could not find parent link: ${parentUrl}`);
-    return;
-  }
-  
-  const parentLinkId = parentData[0].link_id;
-  
   // Process each child link (limit to 5 per parent to avoid overloading)
   const limitedLinks = childLinks.slice(0, 5);
   
@@ -233,7 +232,10 @@ async function processChildLinks(
         title: crawlResult.title || childUrl,
         content: crawlResult.content,
         embedding,
-        parent_link_id: parentLinkId,
+        crawl_session_id: crawlSessionId,
+        parent_doc_id: parentId,
+        root_url: rootUrl,
+        source_email_id: emailId
       });
     } catch (error) {
       console.error(`Error processing child link ${childUrl}:`, error);
