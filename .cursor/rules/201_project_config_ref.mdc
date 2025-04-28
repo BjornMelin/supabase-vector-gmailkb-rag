@@ -1,8 +1,7 @@
 ---
-title: "Project Configuration"
-description: "Long-term project configuration and technical specifications"
-alwaysActive: true
-priority: 30
+description: 
+globs: 
+alwaysApply: false
 ---
 
 # Project Configuration (LTM)

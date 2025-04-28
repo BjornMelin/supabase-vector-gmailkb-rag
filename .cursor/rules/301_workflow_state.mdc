@@ -1,8 +1,7 @@
 ---
-title: "Current Workflow State"
-description: "Dynamic workflow state tracking for the current session"
-alwaysActive: true
-priority: 35
+description: 
+globs: 
+alwaysApply: true
 ---
 
 # Workflow State (STM + Rules + Log)
