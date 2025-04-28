@@ -1,0 +1,221 @@
+# Cursor MCP Tools Integration Reference
+
+This document defines all available MCP servers and usage guidelines for this project.
+
+## Available MCP Servers
+
+| Server | Purpose | Usage Priority |
+|--------|---------|----------------|
+| `supabase_mcp` | Database operations and management | High |
+| `github_mcp` | GitHub repository operations | High |
+| `git_mcp` | Local Git operations | High |
+| `desktop_commander_mcp` | Local file system operations | Medium |
+| `sequentialthinking_mcp` | Complex problem decomposition | High |
+| `tavily_mcp` | Web search and research | Medium |
+| `firecrawl_mcp` | Web crawling and content extraction | Medium |
+| `memory_mcp` | Knowledge persistence across sessions | High |
+
+## Usage Guidelines
+
+### Database Operations (`supabase_mcp`)
+
+- Use for all Supabase project management
+- Execute SQL operations via apply_migration
+- Monitor logs for errors and performance issues
+- Key functions:
+  - `list_tables`
+  - `execute_sql`
+  - `apply_migration`
+  - `get_project_url`
+  - `get_anon_key`
+
+Example:
+```typescript
+// Check existing tables
+supabase_mcp.list_tables({project_id: "ifyfulidhporzucbgccf"})
+
+// Execute SQL query
+supabase_mcp.execute_sql({
+  project_id: "ifyfulidhporzucbgccf",
+  query: "SELECT * FROM emails LIMIT 10;"
+})
+
+// Apply migration
+supabase_mcp.apply_migration({
+  project_id: "ifyfulidhporzucbgccf",
+  name: "add_embeddings_column",
+  query: "ALTER TABLE emails ADD COLUMN embedding vector(1536);"
+})
+```
+
+### GitHub Management (`github_mcp`)
+
+- Use for all remote repository operations
+- Handle issue and PR management
+- Access and modify repository content
+- Key functions:
+  - `create_pull_request`
+  - `create_issue`
+  - `get_file_contents`
+  - `search_code`
+
+Example:
+```typescript
+// Create pull request
+github_mcp.create_pull_request({
+  owner: "bjornmelin",
+  repo: "supabase-vector-gmailkb-rag",
+  title: "feat: add Gmail API integration",
+  head: "feat/gmail-api",
+  base: "main",
+  body: "Implements Gmail API auth flow and email extraction."
+})
+```
+
+### Local Git (`git_mcp`)
+
+- Use for all local Git operations
+- Preferred for branch management
+- Handle commit operations
+- Key functions:
+  - `status`
+  - `add`
+  - `commit`
+  - `branch_create`
+  - `push`
+  - `pull`
+
+Example:
+```typescript
+// Check status
+git_mcp.status({path: "/home/bjorn/repos/supabase-vector-gmailkb-rag"})
+
+// Create feature branch
+git_mcp.branch_create({
+  path: "/home/bjorn/repos/supabase-vector-gmailkb-rag",
+  name: "feat/gmail-api"
+})
+
+// Commit changes
+git_mcp.commit({
+  path: "/home/bjorn/repos/supabase-vector-gmailkb-rag",
+  message: "feat: implement Gmail OAuth flow"
+})
+```
+
+### File Operations (`desktop_commander_mcp`)
+
+- Use for local filesystem operations
+- Manage project files and directories
+- Read and write file content
+- Key functions:
+  - `read_file`
+  - `write_file`
+  - `list_directory`
+  - `create_directory`
+
+Example:
+```typescript
+// Read file
+desktop_commander_mcp.read_file({
+  path: "/home/bjorn/repos/supabase-vector-gmailkb-rag/schema/schema.sql"
+})
+
+// Write file
+desktop_commander_mcp.write_file({
+  path: "/home/bjorn/repos/supabase-vector-gmailkb-rag/supabase/functions/gmail-extract/index.ts",
+  content: "// Gmail extraction code here..."
+})
+```
+
+### Complex Problem Solving (`sequentialthinking_mcp`)
+
+- Use for architectural decisions
+- Apply to complex algorithm design
+- Decompose multi-step problems
+- Key parameters:
+  - `thought`: Current thinking step
+  - `thoughtNumber`: Position in sequence
+  - `totalThoughts`: Estimated steps needed
+  - `nextThoughtNeeded`: Continue thinking?
+
+Example:
+```typescript
+sequentialthinking_mcp.sequentialthinking({
+  thought: "First, we need to understand Gmail API authentication requirements",
+  thoughtNumber: 1,
+  totalThoughts: 5,
+  nextThoughtNeeded: true
+})
+```
+
+### Web Research (`tavily_mcp`, `firecrawl_mcp`)
+
+- Use Tavily for quick factual searches
+- Use Firecrawl for deep website analysis
+- Extract structured data from web pages
+- Key functions:
+  - `tavily-search`: Quick information retrieval
+  - `firecrawl_deep_research`: Comprehensive research
+  - `firecrawl_scrape`: Single page extraction
+  - `firecrawl_extract`: Structured data extraction
+
+Example:
+```typescript
+// Quick search
+tavily_mcp.tavily-search({
+  query: "Gmail API authentication TypeScript",
+  max_results: 5
+})
+
+// Deep research
+firecrawl_mcp.firecrawl_deep_research({
+  query: "pgvector indexing strategies",
+  maxDepth: 3
+})
+```
+
+### Knowledge Management (`memory_mcp`)
+
+- Use for cross-session knowledge persistence
+- Store project context and decisions
+- Track implementation progress
+- Key functions:
+  - `create_entities`: Add new knowledge nodes
+  - `create_relations`: Connect related concepts
+  - `add_observations`: Update existing knowledge
+  - `search_nodes`: Find relevant knowledge
+  - `read_graph`: Get complete knowledge state
+
+Example:
+```typescript
+// Create new knowledge entity
+memory_mcp.create_entities({
+  entities: [{
+    name: "gmail_api_integration",
+    entityType: "project_component",
+    observations: [
+      "Implements OAuth 2.0 flow for Gmail access",
+      "Uses refresh tokens for persistent access",
+      "Handles rate limiting with exponential backoff"
+    ]
+  }]
+})
+
+// Add relationship
+memory_mcp.create_relations({
+  relations: [{
+    from: "supabase_gmailkb_project",
+    to: "gmail_api_integration",
+    relationType: "contains"
+  }]
+})
+```
+
+## Tool Selection Guidelines
+
+1. Always prefer the most specific tool for each task
+2. Use memory_mcp to maintain context between sessions
+3. Apply sequentialthinking_mcp for complex problems
+4. Use git_mcp and github_mcp for all version control
+5. Use supabase_mcp for all database operations

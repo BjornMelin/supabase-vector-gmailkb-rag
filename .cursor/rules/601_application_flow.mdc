@@ -1,0 +1,117 @@
+# Application Flow
+
+This document describes the complete data flow of the Gmail Knowledge Base pipeline, including hierarchical data organization using ltree.
+
+## Pipeline Overview
+
+```mermaid
+flowchart TD
+    A[Gmail API] -->|Fetch emails| B[Edge Function: gmail-extract]
+    B -->|Raw emails| C[Edge Function: process-content]
+    C -->|Structured content| D[Edge Function: embed-content]
+    D -->|Vector embeddings| E[Supabase PostgreSQL]
+    
+    F[Crawl4AI API] -->|Crawl linked URLs| G[Edge Function: crawl-content]
+    G -->|Web content| C
+    
+    H[pg_cron scheduler] -->|Trigger extraction| B
+    H -->|Trigger crawling| F
+    
+    E -->|Vector search| I[Query Interface]
+    I -->|Results| J[RAG Applications]
+    
+    K[Update trigger] -->|Content changes| L[Edge Function: update-vectors]
+    L -->|Re-embed| D
+```
+
+## Data Flow Sequence
+
+1. **Gmail Extraction**
+   * Scheduled via pg_cron at configurable intervals
+   * Authenticates with Gmail API using OAuth2
+   * Fetches emails matching specified filters
+   * Extracts email body, metadata, and attachments
+   * Identifies URLs for potential crawling
+
+2. **Content Processing**
+   * Normalizes and cleans text content
+   * Extracts key entities and concepts
+   * Identifies parent-child relationships for hierarchy
+   * Generates ltree paths for hierarchical organization
+   * Prepares content for embedding
+
+3. **Web Crawling**
+   * Extracts URLs from email content
+   * Filters URLs based on relevance and allowlists
+   * Crawls content using Crawl4AI API
+   * Processes web content similar to email content
+   * Associates crawled content with source emails
+
+4. **Vector Embedding**
+   * Chunks content into optimal sizes for embedding
+   * Generates OpenAI embeddings for each chunk
+   * Stores embeddings in pgvector columns
+   * Creates IVFFLAT indexes for efficient search
+   * Handles versioning of embedding models
+
+5. **Query Interface**
+   * Accepts natural language queries
+   * Generates embeddings for search queries
+   * Performs hybrid search (vector + keyword)
+   * Filters results based on hierarchical paths
+   * Returns ranked, relevant results
+
+## Hierarchical Data Organization (ltree)
+
+The system uses PostgreSQL's ltree extension to organize content hierarchically:
+
+```
+emails
+ ├── <email_id>
+ │    ├── body
+ │    ├── attachment_1
+ │    ├── attachment_2
+ │    └── linked_content
+ │         ├── url_1
+ │         └── url_2
+ └── <email_id>
+      ├── body
+      └── linked_content
+           └── url_3
+```
+
+### ltree Path Examples
+
+- `emails.e123456` - A specific email
+- `emails.e123456.body` - The main body of the email
+- `emails.e123456.attachment_1` - First attachment
+- `emails.e123456.linked_content.url_1` - Content from a URL in the email
+
+### Benefits of ltree Implementation
+
+- Efficient hierarchical queries using path operators
+- Ability to search within specific branches of the hierarchy
+- Support for tree traversal operations
+- Indexing for fast path matching
+
+## Database Schema Integration
+
+- Tables use ltree column for hierarchical paths
+- Foreign key relationships maintain referential integrity
+- Vector columns store OpenAI embeddings
+- IVFFLAT indexes optimize vector search performance
+- Timestamp columns track creation and updates
+
+## Scheduled Operations
+
+- Email extraction runs daily via pg_cron
+- Web crawling runs hourly for newly discovered URLs
+- Vector reindexing runs weekly for optimization
+- Maintenance operations run during low-usage periods
+
+## Error Handling and Retries
+
+- Failed operations are logged to `operation_logs` table
+- Automatic retry mechanism with exponential backoff
+- Alert system for persistent failures
+- Manual override capability through admin interface
