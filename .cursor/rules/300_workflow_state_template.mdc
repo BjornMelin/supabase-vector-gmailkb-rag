@@ -1,6 +1,7 @@
 ---
 title: "Workflow State Template"
 description: "Template for creating new session-specific workflow state files"
+globs: 
 alwaysActive: true
 priority: 35
 ---

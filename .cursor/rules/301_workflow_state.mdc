@@ -1,8 +1,9 @@
 ---
 title: "Current Workflow State"
 description: "Dynamic workflow state tracking for the current session"
+globs: 
 alwaysActive: true
-priority: 35
+priority: 37
 ---
 
 # Workflow State (STM + Rules + Log)
@@ -78,6 +79,7 @@ This file contains the dynamic state of the Supabase Gmail KB project workflow, 
 2025-04-28 09:15 - Initial Cursor rule set created with 7 .mdc files
 2025-04-28 09:20 - Renamed workflow_state_template.mdc to workflow_state.mdc and customized for project
 2025-04-28 09:21 - Ready to begin Phase 3: Gmail API Authentication & Ingest implementation
+2025-04-28 09:40 - Updated all MDC files with correct YAML front matter formatting
 
 ## Current Phase Details
 

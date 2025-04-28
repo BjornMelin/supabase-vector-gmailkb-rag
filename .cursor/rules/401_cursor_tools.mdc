@@ -1,6 +1,7 @@
 ---
 title: "Cursor MCP Tools"
 description: "Reference guide for all MCP server tools and usage patterns"
+globs: 
 alwaysActive: true
 priority: 50
 ---

@@ -1,6 +1,7 @@
 ---
 title: "System Prompt"
 description: "Core operating instructions for Cursor AI Agent"
+globs: 
 alwaysActive: true
 priority: 20
 ---

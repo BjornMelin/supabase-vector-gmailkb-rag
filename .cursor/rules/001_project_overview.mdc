@@ -1,6 +1,7 @@
 ---
 title: "Project Overview"
 description: "Overview of the Gmail KB project and its architecture"
+globs: 
 alwaysActive: true
 priority: 10
 ---

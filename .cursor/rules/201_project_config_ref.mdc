@@ -1,6 +1,7 @@
 ---
 title: "Project Configuration"
 description: "Long-term project configuration and technical specifications"
+globs: 
 alwaysActive: true
 priority: 30
 ---
