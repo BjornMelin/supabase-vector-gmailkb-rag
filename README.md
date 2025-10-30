@@ -92,47 +92,47 @@ For a more detailed architecture explanation, see [ARCHITECTURE.md](docs/ARCHITE
 
 1. Clone the repository:
 
-```bash
-git clone https://github.com/bjornmelin/supabase-vector-gmailkb-rag.git
-cd supabase-vector-gmailkb-rag
-```
+   ```bash
+   git clone https://github.com/bjornmelin/supabase-vector-gmailkb-rag.git
+   cd supabase-vector-gmailkb-rag
+   ```
 
 2. Set up environment variables:
 
-```bash
-cp .env.example .env
-# Edit .env with your credentials
-```
+   ```bash
+   cp .env.example .env
+   # Edit .env with your credentials
+   ```
 
 3. Apply the database migrations:
 
-```bash
-# Apply base schema
-supabase db push schema/schema.sql
+   ```bash
+   # Apply base schema
+   supabase db push schema/schema.sql
 
-# Apply ltree extension and hierarchical structures
-supabase db push supabase/migrations/20250427_add_link_hierarchy.sql
+   # Apply ltree extension and hierarchical structures
+   supabase db push supabase/migrations/20250427_add_link_hierarchy.sql
 
-# Set up scheduled jobs
-supabase db push supabase/migrations/20250427_edge_functions.sql
-```
+   # Set up scheduled jobs
+   supabase db push supabase/migrations/20250427_edge_functions.sql
+   ```
 
 4. Deploy Edge Functions:
 
-```bash
-supabase functions deploy ingest_gmail
-supabase functions deploy crawl_links
-```
+   ```bash
+   supabase functions deploy ingest_gmail
+   supabase functions deploy crawl_links
+   ```
 
 5. Set up secrets for Edge Functions:
 
-```bash
-supabase secrets set OPENAI_API_KEY=your-api-key
-supabase secrets set GMAIL_CLIENT_ID=your-client-id
-supabase secrets set GMAIL_CLIENT_SECRET=your-client-secret
-supabase secrets set GMAIL_REFRESH_TOKEN=your-refresh-token
-supabase secrets set CRAWL4AI_API_KEY=your-api-key
-```
+   ```bash
+   supabase secrets set OPENAI_API_KEY=your-api-key
+   supabase secrets set GMAIL_CLIENT_ID=your-client-id
+   supabase secrets set GMAIL_CLIENT_SECRET=your-client-secret
+   supabase secrets set GMAIL_REFRESH_TOKEN=your-refresh-token
+   supabase secrets set CRAWL4AI_API_KEY=your-api-key
+   ```
 
 ### Usage
 
